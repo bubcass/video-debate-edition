@@ -4,10 +4,16 @@ const STREAM = "https://media.heanet.ie/m3u8/16ea7b8d7be04c46ad664b6299e24121";
 
 function mount(map) {
   if (document.getElementById("videoSync")) return;
+  const toggle = document.createElement("button"); toggle.id = "videoToggle"; toggle.type = "button"; toggle.textContent = "Video";
+  toggle.setAttribute("aria-controls", "videoSync"); document.body.append(toggle);
   const panel = document.createElement("aside"); panel.id = "videoSync";
-  panel.innerHTML = `<div class="vs-head"><div><strong>Watch this debate</strong><span>Video-linked edition</span></div><label class="vs-follow"><input id="vsFollow" type="checkbox" checked> Follow text</label></div><video id="vsVideo" controls playsinline preload="metadata" aria-label="Dáil Éireann sitting video"></video><p id="vsStatus" aria-live="polite">Select a highlighted paragraph to play from that point.</p>`;
+  panel.innerHTML = `<div class="vs-head"><div><strong>Watch this debate</strong><span>Video-linked edition</span></div><div class="vs-actions"><label class="vs-follow"><input id="vsFollow" type="checkbox" checked> Follow text</label><button id="vsClose" type="button" aria-label="Close video panel">×</button></div></div><video id="vsVideo" controls playsinline preload="metadata" aria-label="Dáil Éireann sitting video"></video><p id="vsStatus" aria-live="polite">Select a highlighted paragraph to play from that point.</p>`;
   document.body.append(panel);
   const video = panel.querySelector("video"), follow = panel.querySelector("input"), status = panel.querySelector("p");
+  const setOpen = open => { panel.hidden = !open; toggle.setAttribute("aria-expanded", String(open)); toggle.textContent = open ? "Hide video" : "Video"; localStorage.setItem("dv_video_open", String(open)); };
+  setOpen(localStorage.getItem("dv_video_open") !== "false");
+  toggle.addEventListener("click", () => setOpen(panel.hidden));
+  panel.querySelector("#vsClose").addEventListener("click", () => setOpen(false));
   video.src = STREAM;
   const entries = map.paragraphs.sort((a,b)=>a.start-b.start);
   const lookup = id => entries.find(x=>x.id===id);
