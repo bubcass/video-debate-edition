@@ -10,3 +10,10 @@ node_modules/
 
 # Local XML cache (not needed for Pages)
 data/xml/
+
+# Large local transcription inputs and review evidence; Pages only needs the map.
+data/dail-2026-09-17-openai/alignment/
+data/dail-2026-09-17-openai/bundle.json
+data/dail-2026-09-17-openai/chunks/
+data/dail-2026-09-17-openai/whisper-1-words.json
+data/dail-2026-09-17-openai-test.json

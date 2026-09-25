@@ -11,7 +11,7 @@
 const NS = "http://docs.oasis-open.org/legaldocml/ns/akn/3.0/CSD13";
 
 // Hard fallback only (used if available-dates.json fails to load)
-const FALLBACK_DATE = "2026-02-05";
+const FALLBACK_DATE = "2026-09-17";
 // Runtime default (set after we load available-dates.json)
 let DEFAULT_DATE = FALLBACK_DATE;
 
@@ -1645,6 +1645,7 @@ function setRunningStrings({ chamber, dateText }) {
     const pageMap = await loadPageMap();
     fillTitlePage(xml);
     renderBody(xml, pageMap);
+    document.dispatchEvent(new CustomEvent("debate-rendered", { detail: { date: DOC_DATE_ISO } }));
 
     const titlePage = document.querySelector(".titlepage");
     if (titlePage) titlePage.classList.add("titlepage--unpaired");
